@@ -289,6 +289,7 @@
       <label for="tankNo">タンク番号</label>
       <div class="unit-row">
         <select id="tankNo">
+          <option value="" selected disabled>タンクを選択</option>
           <option value="11">11</option>
           <option value="21">21</option>
           <option value="22">22</option>
@@ -497,6 +498,19 @@ function setMode(newMode){
 function calc(){
   const tank = $tankNo.value;
   const table = TANKS[tank];
+
+  if (!tank || !table){
+    $outRange.textContent = 'タンク番号を選択してください';
+    if (mode === 'forward'){
+      $mmHint.textContent = '2㎜刻みで入力してください（例：234）';
+      $mmHint.classList.remove('error');
+      $outVolume.innerHTML = '–<span class="ru">ℓ</span>';
+    } else {
+      $literHint.classList.remove('error');
+      $outVolume.innerHTML = '–<span class="ru">㎜</span>';
+    }
+    return;
+  }
 
   const minMm = table[0][0];
   const maxMm = table[table.length-1][0];
